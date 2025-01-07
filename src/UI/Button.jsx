@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 
-function Button({ disabled, children, to, type }) {
+function Button({ disabled, children, to, type, onClick }) {
   const navigate = useNavigate();
 
   const base =
@@ -16,6 +16,12 @@ function Button({ disabled, children, to, type }) {
       <Link className={styles[type]} to={to}>
         {children}
       </Link>
+    );
+  if (onClick)
+    return (
+      <button onClick={onClick} className={styles[type]} disabled={disabled}>
+        {children}
+      </button>
     );
   return (
     <button className={styles[type]} disabled={disabled}>
