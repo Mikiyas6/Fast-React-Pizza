@@ -2,6 +2,7 @@ import Header from "./Header";
 import CartOverview from "../features/cart/CartOverview";
 import { Outlet, useNavigate, useNavigation } from "react-router-dom";
 import Loader from "./Loader";
+import { useSelector } from "react-redux";
 function AppLayout() {
   const navigation = useNavigation();
   // It provides information about the current navigation state of the application
@@ -11,6 +12,7 @@ function AppLayout() {
   // "loading": A route transition is in progress (e.g., fetching data or loading a new route).
   // "submitting": A form submission is happening during navigation.
   const isLoading = navigation.state === "loading";
+  const cart = useSelector((store) => store.cart.cart);
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto]">
       {isLoading && <Loader />}
@@ -20,7 +22,7 @@ function AppLayout() {
           <Outlet />
         </main>
       </div>
-      <CartOverview />
+      {cart.length > 0 && <CartOverview />}
     </div>
   );
 }

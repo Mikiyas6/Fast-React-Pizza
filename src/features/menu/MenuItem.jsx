@@ -13,7 +13,7 @@ function MenuItem({ pizza }) {
       name,
       quantity: 1,
       unitPrice,
-      totalPrice: unitPrice * this.quantity,
+      totalPrice: unitPrice * 1,
     };
     dispatch(addItem(newItem));
     navigate("/cart");
