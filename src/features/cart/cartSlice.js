@@ -43,4 +43,7 @@ export const getTotalCartQuantity = (store) =>
 export const getTotalCartPrice = (store) =>
   store.cart.cart.reduce((total, item) => total + item.totalPrice, 0);
 
+export const getCart = (store) => store.cart.cart;
+export const getUsername = (store) => store.user.username;
+
 export default cartSlice.reducer;

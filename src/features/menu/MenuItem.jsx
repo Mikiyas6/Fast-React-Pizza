@@ -2,11 +2,10 @@ import { formatCurrency } from "../../utils/helpers";
 import Button from "../../UI/Button";
 import { useDispatch } from "react-redux";
 import { addItem } from "../cart/cartSlice";
-import { useNavigate } from "react-router-dom";
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   function handleAddToCart() {
     const newItem = {
       pizzaId: id,
@@ -16,7 +15,6 @@ function MenuItem({ pizza }) {
       totalPrice: unitPrice * 1,
     };
     dispatch(addItem(newItem));
-    navigate("/cart");
   }
   return (
     <li className="gap flex gap-4 py-2">
