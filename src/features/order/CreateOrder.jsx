@@ -7,7 +7,7 @@ import {
   clearCart,
   getCart,
   getTotalCartPrice,
-  getUsername,
+  getUser,
 } from "../cart/cartSlice";
 import EmptyCart from "../cart/EmptyCart";
 import store from "../../store";
@@ -25,7 +25,14 @@ function CreateOrder() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const formErrors = useActionData();
-  const username = useSelector(getUsername);
+  const {
+    username,
+    status: addressStatus,
+    position,
+    address,
+    error: errorAddress,
+  } = useSelector(getUser);
+  const isLoadingAddress = addressStatus === "loading";
   const totalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = withPriority ? PRIORITY_RATE * totalCartPrice : 0;
   const totalPrice = totalCartPrice + priorityPrice;
@@ -35,13 +42,14 @@ function CreateOrder() {
   function handlePriority() {
     setWithPriority((withPriority) => !withPriority);
   }
-  function handleGetAddress() {
+  function handleGetAddress(e) {
+    e.preventDefault();
     dispatch(fetchAddress());
   }
   return (
     <div className="space-y-6">
       <h2>Ready to order? Lets go! </h2>
-      <button onClick={handleGetAddress}>Get Position</button>
+
       <Form className="space-y-3" method="POST">
         <div className="space-y-2">
           <label className="block">First Name</label>
@@ -59,14 +67,41 @@ function CreateOrder() {
           <div>
             <input className="input" type="tel" name="phone" required />
           </div>
-          {formErrors?.phone && <p>{formErrors.phone}</p>}
+          {formErrors?.phone && (
+            <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
+              {formErrors.phone}
+            </p>
+          )}
         </div>
 
-        <div className="space-y-2">
+        <div className="relative space-y-2">
           <label className="block">Address</label>
           <div>
-            <input className="input" type="text" name="address" required />
+            <input
+              className="input"
+              type="text"
+              name="address"
+              disabled={isLoadingAddress}
+              required
+              defaultValue={address}
+            />
+            {addressStatus === "error" && (
+              <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">
+                {errorAddress}
+              </p>
+            )}
           </div>
+          <span className="absolute right-[3.5px] top-[1.7rem] z-10 sm:top-[1.8rem]">
+            {!position.latitude && !position.longitude && (
+              <Button
+                type="small"
+                disabled={isLoadingAddress}
+                onClick={handleGetAddress}
+              >
+                Get Position
+              </Button>
+            )}
+          </span>
         </div>
 
         <div className="space-x-2">
@@ -83,8 +118,17 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          <input
+            type="hidden"
+            name="position"
+            value={
+              position.longitude && position.latitude
+                ? `${position.latitude}, ${position.longitude}`
+                : ""
+            }
+          />
 
-          <Button type="primary" disabled={isSubmitting}>
+          <Button type="primary" disabled={isSubmitting || isLoadingAddress}>
             {isSubmitting
               ? "Placing Order...."
               : `Order Now For ${formatCurrency(totalPrice)}  `}
@@ -104,11 +148,11 @@ export async function action({ request }) {
     cart: JSON.parse(data.cart),
     priority: data.priority === "true",
   };
-  console.log(order);
   const errors = {};
   if (!isValidPhone(order.phone))
     errors.phone =
       "Please give us your correct phone number. We might need to contact you.";
+
   if (Object.keys(errors).length > 0) return errors;
   const newOrder = await createOrder(order);
   store.dispatch(clearCart());

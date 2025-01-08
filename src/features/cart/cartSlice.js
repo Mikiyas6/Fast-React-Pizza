@@ -48,5 +48,6 @@ export const getCurrentQuantityById = (id) => (store) =>
 
 export const getCart = (store) => store.cart.cart;
 export const getUsername = (store) => store.user.username;
+export const getUser = (store) => store.user;
 
 export default cartSlice.reducer;
