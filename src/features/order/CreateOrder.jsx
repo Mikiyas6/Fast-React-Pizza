@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../../UI/Button";
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   clearCart,
   getCart,
@@ -12,6 +12,7 @@ import {
 import EmptyCart from "../cart/EmptyCart";
 import store from "../../store";
 import { formatCurrency } from "../../utils/helpers";
+import { fetchAddress } from "../user/userSlice";
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -28,14 +29,19 @@ function CreateOrder() {
   const totalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = withPriority ? PRIORITY_RATE * totalCartPrice : 0;
   const totalPrice = totalCartPrice + priorityPrice;
+  const dispatch = useDispatch();
+
   if (!cart.length) return <EmptyCart />;
   function handlePriority() {
     setWithPriority((withPriority) => !withPriority);
   }
+  function handleGetAddress() {
+    dispatch(fetchAddress());
+  }
   return (
     <div className="space-y-6">
       <h2>Ready to order? Lets go! </h2>
-
+      <button onClick={handleGetAddress}>Get Position</button>
       <Form className="space-y-3" method="POST">
         <div className="space-y-2">
           <label className="block">First Name</label>
