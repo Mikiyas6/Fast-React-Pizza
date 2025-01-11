@@ -14,7 +14,7 @@ function Home() {
       </h1>
       {!username && <CreateUser />}
       {username && (
-        <Button to="/" type="primary">
+        <Button to="/menu" type="primary">
           Continue Ordering, {username}
         </Button>
       )}

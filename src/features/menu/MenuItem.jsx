@@ -7,6 +7,10 @@ import UpdateItemQuantity from "../cart/updateItemQuantity";
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
   const dispatch = useDispatch();
+  // The getCurrentQuantityById function is called with id and returns a selector function that uses that id somewhere in its code
+  // The selector function is invoked by useSelector with the Redux store as its argument.
+  // Then the useSelector extracts the desired value
+  //  The extracted value is then assigned to a variable
   const currentQuantity = useSelector(getCurrentQuantityById(id));
   const isInCart = currentQuantity > 0;
   function handleAddToCart() {

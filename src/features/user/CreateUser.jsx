@@ -8,8 +8,8 @@ function CreateUser() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   function handleSubmit(e) {
-    if (!username) return;
     e.preventDefault();
+    if (!username) return;
     dispatch(updateName(username));
     navigate("/menu");
   }
@@ -28,7 +28,7 @@ function CreateUser() {
         className="input mb-8 w-72"
       />
 
-      {username !== "" && (
+      {username && (
         <div>
           <Button type="primary">Start ordering</Button>
         </div>

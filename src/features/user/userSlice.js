@@ -7,11 +7,13 @@ function getPosition() {
 }
 // In Redux, Thunk Middleware is a middleware that allows you to write action creators that return a function instead of an action object. These functions can perform side effects such as asynchronous operations (e.g., API calls) before dispatching a real action object.
 
-// Without middleware like redux-thunk, Redux only supports plain action objects that are synchronous in nature. Thunks extend this functionality, making it possible to handle async operations cleanly.
+// Without middleware like redux-thunk, Redux only supports plain action objects that are synchronous in nature. so If we have an idea of preparing our payload inside of the prepare function by writing an async function that has side effects or fetches data, and we want to create our payload object by using that data, That is going to be wrong since redux don't allow Async Operations to exist anywhere inside of a Slice. Thunks extend this functionality, making it possible to handle async operations cleanly.
 
 /*A thunk in programming is a function that delays computation until it is needed. In this case, the fetchAddress function returns a function that performs asynchronous operations (e.g., geolocation retrieval and reverse geocoding). This deferred logic is why it's referred to as a thunk. */
 
-// So basically the nameless function wrapped by the createAsyncThunk is the thunk, after wrapping, the thunk is effectively stored in the fetchAddress variable, and when you refer to fetchAddress, you're referring to the thunk.
+// when you refer to fetchAddress, you're referring to the thunk And this thunk or fetchAddress is basically an Action Creator that returns an Async function. What makes this Action Creator different from other Action Creators is that it returns a function, not an object. and when we call this fetchAddress Action creator inside of a dispatch function, since it returns a function, react will execute that function and the result of calling that function is going to be an action object with the type set to the value that we passed in as the first argument to the createAsyncThunk method and the payload as the value returned by the async function and that async function is what is returned by Our Action Creator (Thunk).
+
+// So thunk is basically An action creator that returns an Async function instead of an object.
 
 export const fetchAddress = createAsyncThunk(
   "user/fetchAddress",
@@ -32,7 +34,7 @@ export const fetchAddress = createAsyncThunk(
     return { position, address }; // Payload of the Fulfilled State
   },
 );
-
+// Defines the default structure of the state managed by this slice
 const initialState = {
   username: "",
   status: "idle",
@@ -40,8 +42,9 @@ const initialState = {
   address: "",
   error: "",
 };
+// responsible for managing one portion of the global Redux state. That portion of the state is named "user"
 const userSlice = createSlice({
-  name: "user",
+  name: "user", // Specifies the stateDomain of the Action Types of the Actions generated from this slice
   initialState,
   reducers: {
     updateName(state, action) {
@@ -65,16 +68,18 @@ const userSlice = createSlice({
       }),
 });
 export const { updateName } = userSlice.actions;
+export const getUsername = (store) => store.user.username;
+export const getUser = (store) => store.user;
 export default userSlice.reducer;
 
 /*
 How fetchAddress Thunk Works in the Code
 
 1. Dispatching the Thunk: dispatch(fetchAddress());
-When you dispatch fetchAddress in your component, the middleware detects that fetchAddress returns a thunk(The async function) and it will execute that thunk.
+When you dispatch fetchAddress in your component, the middleware detects that fetchAddress is a thunk meaning that it returns an Async function, and then right away it will execute that async function.
 2. Async Flow:
-- As soon as the thunk starts its execution, An action with the type "user/fetchAddress/pending" and no payload is going to be returned by the thunk and the dispatch function dispatches that action to the reducer defined next to the Auto-generated Lifecycle Action which is "fetchAddress.pending" by passing in the current state and the action to the reducer. Then the state will be updated as it is defined inside the reducer
-- Then, If the thunk finish executing successfully and returns what is is expected to return "{ position, address }" (If the promise returned from the async function(thunk) is fulfilled or resolved by "{ position, address }"), An action with the type "user/fetchAddress/fulfilled" and with a payload of payload:{ position, address } is going to be returned by the thunk and the dispatch function then dispatches that action to the reducer defined next to the Auto-generated Lifecycle Action which is "fetchAddress.fulfilled" by passing in the current state and the action to the reducer. Then the state will be updated as it is defined inside the reducer
+- As soon as the Async function starts its execution, An action with the type "user/fetchAddress/pending" and no payload is going to be returned and the dispatch function dispatches that action to the reducer defined next to the Auto-generated Lifecycle Action which is "fetchAddress.pending" by passing in the current state and the action to the reducer. Then the state will be updated as it is defined inside the reducer
+- Then, If the Async function finished executing successfully and returns what is expected to return "{ position, address }" (If the promise returned from the async function is fulfilled or resolved by "{ position, address }"), An action with the type "user/fetchAddress/fulfilled" and with a payload of payload:{ position, address } is going to be returned by the thunk and the dispatch function then dispatches that action to the reducer defined next to the Auto-generated Lifecycle Action which is "fetchAddress.fulfilled" by passing in the current state and the action to the reducer. Then the state will be updated as it is defined inside the reducer
 - If the thunk fails to finish executing, then An action with the type "user/fetchAddress/rejected" and with a payload of payload:{error:{message}} is going to be returned by the thunk and the dispatch function then dispatches that action to the reducer defined next to the Auto-generated Lifecycle Action which is "fetchAddress.rejected" by passing in the current state and the action to the reducer. Then the state will be updated as it is defined inside the reducer
 
 */

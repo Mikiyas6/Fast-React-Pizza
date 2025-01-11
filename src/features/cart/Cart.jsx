@@ -3,8 +3,9 @@ import LinkButton from "../../UI/LinkButton";
 import Button from "../../UI/Button";
 import CartItem from "./CartItem";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, getCart, getUsername } from "./cartSlice";
+import { clearCart, getCart } from "./cartSlice";
 import EmptyCart from "./EmptyCart";
+import { getUsername } from "../user/userSlice";
 
 // const fakeCart = [
 //   {

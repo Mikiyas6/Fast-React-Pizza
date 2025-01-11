@@ -3,16 +3,11 @@ import Button from "../../UI/Button";
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearCart,
-  getCart,
-  getTotalCartPrice,
-  getUser,
-} from "../cart/cartSlice";
+import { clearCart, getCart, getTotalCartPrice } from "../cart/cartSlice";
 import EmptyCart from "../cart/EmptyCart";
 import store from "../../store";
 import { formatCurrency } from "../../utils/helpers";
-import { fetchAddress } from "../user/userSlice";
+import { fetchAddress, getUser } from "../user/userSlice";
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -38,7 +33,6 @@ function CreateOrder() {
   const totalPrice = totalCartPrice + priorityPrice;
   const dispatch = useDispatch();
 
-  if (!cart.length) return <EmptyCart />;
   function handlePriority() {
     setWithPriority((withPriority) => !withPriority);
   }
@@ -46,6 +40,7 @@ function CreateOrder() {
     e.preventDefault();
     dispatch(fetchAddress());
   }
+  if (!cart.length) return <EmptyCart />;
   return (
     <div className="space-y-6">
       <h2>Ready to order? Lets go! </h2>
@@ -138,11 +133,16 @@ function CreateOrder() {
     </div>
   );
 }
+/*
+- Action functions are route-specific, asynchronous functions that are invoked whenever a <Form> or submit() function is triggered. Then This functions take objects like (request and params) as arguments and process them and perform side effects like data validation, database updates, or API calls. They also handle input or form data and then returns either a response or a redirect.
+- If the action returns:
+  - redirect(): React Router navigates to the specified URL.
+  - Response Object: React Router will make the response accessible to the component that triggered the action via useActionData() hook.
 
+*/
 export async function action({ request }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  console.log(data);
   const order = {
     ...data,
     cart: JSON.parse(data.cart),

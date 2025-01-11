@@ -47,7 +47,5 @@ export const getCurrentQuantityById = (id) => (store) =>
   store.cart.cart.find((item) => item.pizzaId === id)?.quantity ?? 0;
 
 export const getCart = (store) => store.cart.cart;
-export const getUsername = (store) => store.user.username;
-export const getUser = (store) => store.user;
 
 export default cartSlice.reducer;
