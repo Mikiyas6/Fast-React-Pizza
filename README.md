@@ -4,6 +4,11 @@ Welcome to **Fast React Pizza Co.**, your ultimate pizza-ordering application! W
 
 ---
 
+- Github Repo: [Github-link](https://github.com/Mikiyas6/Fast-React-Pizza)
+- Live Site URL: [Page-link](https://mikiyas6.github.io/Fast-React-Pizza/)
+
+---
+
 ## 🚀 Features
 
 ### 🔍 Explore the Menu
