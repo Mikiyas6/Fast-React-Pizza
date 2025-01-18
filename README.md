@@ -59,13 +59,13 @@ Welcome to **Fast React Pizza Co.**, your ultimate pizza-ordering application! W
      - View total prices.
 
 ### 4. **Order Page** 📝
-![Order](./public/Order.png)
+![Order](./public/order.png)
    - Collects user details such as name, address, and phone number.
    - Allows users to choose priority delivery.
    - Displays the total cost, including priority fees.
 
 ### 5. **Order Status Page** 🚚
-![OrderStatus](./public/SpecificOrder.png)
+![OrderStatus](./public/PlacedOrder.png)
    - Shows the current status of your order.
    - Provides estimated delivery time.
    - Updates in real-time for a seamless experience.
