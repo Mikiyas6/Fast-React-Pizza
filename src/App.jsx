@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import Home from "./UI/Home";
 import Error from "./UI/Error";
 import Menu, { loader as menuLoader } from "./features/menu/Menu";
@@ -27,7 +27,7 @@ Top-Level Route
 -- action: A function that handles mutations like form submissions or user interactions. When a form is submitted, the corresponding route’s action is called by passing in the request and params obj
 
 */
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     element: <AppLayout />,
     errorElement: <Error />,
