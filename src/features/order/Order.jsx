@@ -15,6 +15,18 @@ function Order() {
   // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
   const order = useLoaderData();
   const fetcher = useFetcher();
+  /*
+- useFetcher is designed for dynamic data fetching after a component has already been rendered.
+- It allows you to fetch data as a result of user interactions or other non-routing-related events without reloading the route.
+- Example: Fetching additional information when a user hovers over an item or clicks a button.
+
+BUT
+
+- Loaders are designed to prepare data that a route component will need before rendering.
+- They execute once during navigation to a route and return data that becomes available via useLoaderData.
+
+That's why we can't always rely on loaders
+  */
   useEffect(
     function () {
       if (!fetcher.data && fetcher.state === "idle") fetcher.load("/menu");
