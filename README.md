@@ -143,10 +143,12 @@ Contributions are welcome! If you’d like to contribute:
 ## 📬 Contact
 
 If you have any questions, feel free to reach out:
-- **Email**: [your-email@example.com](mailto:Mikiyast.Tewodroes@A2SV.org)
-- **GitHub**: [your-username](https://github.com/Mikiyas6)
+- **Email**: [Mikiyas.Tewodroes@A2SV.org](mailto:Mikiyas.Tewodroes@A2SV.org)
+- **GitHub**: [Mikiyas.Tewodroes@A2SV.org](https://github.com/Mikiyas6)
 
 ---
 
 Enjoy building your pizza empire! 🍕✨
+
+
 
