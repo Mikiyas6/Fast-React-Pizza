@@ -144,7 +144,7 @@ Contributions are welcome! If you’d like to contribute:
 
 If you have any questions, feel free to reach out:
 - **Email**: [Mikiyas.Tewodroes@A2SV.org](mailto:Mikiyas.Tewodroes@A2SV.org)
-- **GitHub**: [Mikiyas.Tewodroes@A2SV.org](https://github.com/Mikiyas6)
+- **GitHub**: [Mikiyas6](https://github.com/Mikiyas6)
 
 ---
 
